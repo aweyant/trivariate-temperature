@@ -1,0 +1,4 @@
+../data/livneh_tmax/complete.tmax.nc
+95
+percentile
+tmax
