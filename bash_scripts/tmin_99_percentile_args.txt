@@ -1,0 +1,4 @@
+../data/livneh_tmin/complete.tmin.nc
+99
+percentile
+tmin
