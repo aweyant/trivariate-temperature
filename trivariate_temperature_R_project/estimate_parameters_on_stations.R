@@ -50,6 +50,21 @@ ggplot(data = world) +
        color = "n") +
   theme_bw()
 
+
+# Temperature threshold by station ----------------------------------------
+#+ ghcnd-stations-tmin-95p-hhy-params-threshold.png
+ggplot(data = world) +
+  geom_sf(fill = NA) +
+  coord_sf(xlim = ca_bbox[1:2],
+           ylim = ca_bbox[3:4]) +
+  geom_point(data = ghcnd_stations_tmin_95p_hhy_params_df,
+             aes(x = longitude, y = latitude, color = event_var_threshold)) +
+  scale_color_viridis_b(breaks = seq(50,300,by = 50)) +
+  labs(title = "Temperature Threshold\nFor Defining Heatwaves",
+       color = paste0("\U00B0","C","*10")) +
+  theme_bw()
+
+
 # qhat by station ---------------------------------------------------------
 #+ ghcnd-stations-tmin-95p-hhy-params-q-hat.png
 ggplot(data = world) +

@@ -66,6 +66,25 @@ ggplot(data = world) +
 ![](estimate_parameters_on_stations_files/figure-gfm/ghcnd-stations-tmin-95p-hhy-params-n-events.png-1.png)<!-- -->
 
 ``` r
+# Temperature threshold by station ----------------------------------------
+```
+
+``` r
+ggplot(data = world) +
+  geom_sf(fill = NA) +
+  coord_sf(xlim = ca_bbox[1:2],
+           ylim = ca_bbox[3:4]) +
+  geom_point(data = ghcnd_stations_tmin_95p_hhy_params_df,
+             aes(x = longitude, y = latitude, color = event_var_threshold)) +
+  scale_color_viridis_b(breaks = seq(50,300,by = 50)) +
+  labs(title = "Temperature Threshold\nFor Defining Heatwaves",
+       color = paste0("\U00B0","C","*10")) +
+  theme_bw()
+```
+
+![](estimate_parameters_on_stations_files/figure-gfm/ghcnd-stations-tmin-95p-hhy-params-threshold.png-1.png)<!-- -->
+
+``` r
 # qhat by station ---------------------------------------------------------
 ```
 
