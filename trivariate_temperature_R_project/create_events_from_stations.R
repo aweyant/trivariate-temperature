@@ -44,3 +44,49 @@ ghcnd_stations_tmin_95p_hhy_events_df <- ghcnd_stations_ca_pre_1984_df %>%
 
 write_csv(x = ghcnd_stations_tmin_95p_hhy_events_df,
           file = "../data/ghcnd_tmin_95p_hhy_events.csv")
+
+
+ghcnd_stations_tmin_95p_hhy_events_disagg_df <- ghcnd_stations_ca_pre_1984_df %>%
+  #filter(station %in% stations_of_interest) %>%
+  create_events(unique_id_coords = c("station"),
+                metadata_coords = c("longitude", "latitude", "date"),
+                event_var = "tmin",
+                event_func = "sum",
+                event_var_threshold = 0.95,
+                inequality_direction = "greater",
+                quantile_filter = "year %in% 1960:1989 & month %in% 5:10",
+                event_var_threshold_type = "percentile",
+                aggregate_event = FALSE)
+
+write_csv(x = ghcnd_stations_tmin_95p_hhy_events_disagg_df,
+          file = "../data/ghcnd_tmin_95p_hhy_events_disagg.csv")
+
+ghcnd_stations_tmin_97p_hhy_events_df <- ghcnd_stations_ca_pre_1984_df %>%
+  #filter(station %in% stations_of_interest) %>%
+  create_events(unique_id_coords = c("station"),
+                metadata_coords = c("longitude", "latitude", "date"),
+                event_var = "tmin",
+                event_func = "sum",
+                event_var_threshold = 0.975,
+                inequality_direction = "greater",
+                quantile_filter = "year %in% 1960:1989 & month %in% 5:10",
+                event_var_threshold_type = "percentile")
+
+write_csv(x = ghcnd_stations_tmin_97p_hhy_events_df,
+          file = "../data/ghcnd_tmin_97p_hhy_events.csv")
+
+
+ghcnd_stations_tmin_97p_hhy_events_disagg_df <- ghcnd_stations_ca_pre_1984_df %>%
+  #filter(station %in% stations_of_interest) %>%
+  create_events(unique_id_coords = c("station"),
+                metadata_coords = c("longitude", "latitude", "date"),
+                event_var = "tmin",
+                event_func = "sum",
+                event_var_threshold = 0.975,
+                inequality_direction = "greater",
+                quantile_filter = "year %in% 1960:1989 & month %in% 5:10",
+                event_var_threshold_type = "percentile",
+                aggregate_event = FALSE)
+
+write_csv(x = ghcnd_stations_tmin_97p_hhy_events_disagg_df,
+          file = "../data/ghcnd_tmin_97p_hhy_events_disagg.csv")
