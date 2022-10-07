@@ -1,7 +1,7 @@
 A First Look of GTETLG Applied to Minimum Temperature
 ================
 alexander
-2022-10-06
+2022-10-07
 
 ``` r
 # Load packages -----------------------------------------------------------
@@ -22,7 +22,7 @@ ghcnd_stations_tmin_97p_hhy_events_df <- read_csv("../data/ghcnd_tmin_97p_hhy_ev
 ```
 
     ## Rows: 85374 Columns: 9
-    ## ── Column specification ────────────────────────────────────────────────────────────────────
+    ## ── Column specification ───────────────────────────────────────────────────────────────────────
     ## Delimiter: ","
     ## chr  (1): unique_id
     ## dbl  (7): event_var_threshold, total, max_rate, length, event_number, longitude, latitude
@@ -158,7 +158,7 @@ ggplot(data = world) +
            ylim = ca_bbox[3:4]) +
   geom_point(data = ghcnd_stations_tmin_97p_hhy_params_df,
              aes(x = longitude, y = latitude, color = 1/p_hat)) +
-  scale_color_viridis_b() +
+  scale_color_viridis_b(limits = c(0,8), breaks = seq(2,6,by =2)) +
   labs(title = "\'Persistance\' of Heatwaves\nAfter First Day",
       # color = "1/p_hat",
       color = paste0("p_hat", "\U207B", "\U00B9")) +
