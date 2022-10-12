@@ -6,16 +6,16 @@ library(foreach)
 source("./gtetlg_utils.R")
 
 # Load files --------------------------------------------------------------
-ghcnd_stations_tmin_97p_hhy_events_df <- read_csv("../data/ghcnd_tmin_97p_hhy_events.csv")
-ghcnd_stations_tmin_97p_hhy_params_df <- read_csv("../data/ghcnd_stations_tmin_97p_hhy_params.csv") %>%
+ghcnd_stations_tmin_97p_events_df <- read_csv("../data/ghcnd_tmin_97p_events.csv")
+ghcnd_stations_tmin_97p_params_df <- read_csv("../data/ghcnd_stations_tmin_97p_params.csv") %>%
   rename(n = n_events,
          q = q_hat,
          p = p_hat,
          b = b_hat)
 
-ghcnd_stations_tmin_97p_hhy_gen_events_df <- lapply(X = ghcnd_stations_tmin_97p_hhy_params_df$unique_id,
+ghcnd_stations_tmin_97p_gen_events_df <- lapply(X = ghcnd_stations_tmin_97p_params_df$unique_id,
                                                     FUN = function(cur_id) {
-                                                      params = (ghcnd_stations_tmin_97p_hhy_params_df %>%
+                                                      params = (ghcnd_stations_tmin_97p_params_df %>%
                                                                   na.omit() %>%
                                                                   filter(unique_id == cur_id))[1,5:8] %>%
                                                         as_vector() %>% unlist()
@@ -38,12 +38,12 @@ source("./fun_overlapping_histograms.R")
 
 # Test function -----------------------------------------------------------
 N = 50
-stations_of_interest <- ghcnd_stations_tmin_97p_hhy_gen_events_df$unique_id %>%
+stations_of_interest <- ghcnd_stations_tmin_97p_gen_events_df$unique_id %>%
   unique() %>%
   sample(size = N)
 for(i in seq_along(stations_of_interest)){
   id = stations_of_interest[i]
-  png(filename = paste0("../images/ghcnd/goodness-of-fit/max-qq-plots/",
+  png(filename = paste0("../images/ghcnd/goodness-of-fit/max-qq-plots-97p/",
                         id,
                         "_",
                         "qq_plot.png"),
@@ -51,9 +51,9 @@ for(i in seq_along(stations_of_interest)){
       width = 12,
       unit = "cm",
       res = 200)
-  qqplot(y = (ghcnd_stations_tmin_97p_hhy_events_df %>%
+  qqplot(y = (ghcnd_stations_tmin_97p_events_df %>%
                 filter(unique_id == id))$max_rate,
-         x = (ghcnd_stations_tmin_97p_hhy_gen_events_df %>%
+         x = (ghcnd_stations_tmin_97p_gen_events_df %>%
                 filter(unique_id == id))$event_max,
          asp = 1,
          xlab = "Generated",
@@ -61,10 +61,10 @@ for(i in seq_along(stations_of_interest)){
          main = paste0("Magnitude Emperical QQ: ",
                        id),
          sub = paste0("Lat: = ",
-                      round((ghcnd_stations_tmin_97p_hhy_params_df %>%
+                      round((ghcnd_stations_tmin_97p_params_df %>%
                                filter(unique_id == id))$latitude, 3),
                       "Lon: = ",
-                      round((ghcnd_stations_tmin_97p_hhy_params_df %>%
+                      round((ghcnd_stations_tmin_97p_params_df %>%
                                filter(unique_id == id))$longitude, 3))
   )
   abline(a = 0, b = 1, col = "steelblue", lwd = 2)

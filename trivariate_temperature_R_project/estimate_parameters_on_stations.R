@@ -19,15 +19,15 @@ ca_bbox <- c(-124.409591, -114.131211,
              32.534156, 42.009518)
 
 # Load data ---------------------------------------------------------------
-ghcnd_stations_tmin_97p_hhy_events_df <- read_csv("../data/ghcnd_tmin_97p_hhy_events.csv")
+ghcnd_stations_ctn95pct_events_df <- read_csv("../data/ghcnd_tmin_ctn95pct_events.csv")
 
 # Estimate parameters -----------------------------------------------------
-ghcnd_stations_tmin_97p_hhy_params_df <- ghcnd_stations_tmin_97p_hhy_events_df %>%
+ghcnd_stations_ctn95pct_params_df <- ghcnd_stations_ctn95pct_events_df %>%
   na.omit() %>%
   group_by(unique_id) %>%
   summarize(latitude = min(latitude),
             longitude = min(longitude),
-            event_var_threshold = min(event_var_threshold),
+            #event_var_threshold = min(event_var_threshold),
             n_events = max(event_number),
             q_hat = q_est(length),
             p_hat = p_est(length),
@@ -35,8 +35,8 @@ ghcnd_stations_tmin_97p_hhy_params_df <- ghcnd_stations_tmin_97p_hhy_events_df %
   na.omit() %>%
   filter(n_events >= 100)
 
-write_csv(x = ghcnd_stations_tmin_97p_hhy_params_df,
-          file = "../data/ghcnd_stations_tmin_97p_hhy_params.csv")
+write_csv(x = ghcnd_stations_ctn95pct_params_df,
+          file = "../data/ghcnd_stations_ctn95pct_params.csv")
 
 # Number of events by station ---------------------------------------------
 
@@ -45,7 +45,7 @@ ggplot(data = world) +
   geom_sf(fill = NA) +
   coord_sf(xlim = ca_bbox[1:2],
           ylim = ca_bbox[3:4]) +
-  geom_point(data = ghcnd_stations_tmin_97p_hhy_params_df,
+  geom_point(data = ghcnd_stations_tmin_97p_params_df,
              aes(x = longitude, y = latitude, color = n_events)) +
   scale_color_viridis_b(breaks = seq(100,800,by = 100)) +
   labs(title = "Number of Events",
@@ -59,7 +59,7 @@ ggplot(data = world) +
   geom_sf(fill = NA) +
   coord_sf(xlim = ca_bbox[1:2],
            ylim = ca_bbox[3:4]) +
-  geom_point(data = ghcnd_stations_tmin_97p_hhy_params_df,
+  geom_point(data = ghcnd_stations_tmin_97p_params_df,
              aes(x = longitude, y = latitude, color = event_var_threshold)) +
   scale_color_viridis_b(breaks = seq(50,300,by = 50)) +
   labs(title = "Temperature Threshold\nFor Defining Heatwaves",
@@ -73,7 +73,7 @@ ggplot(data = world) +
   geom_sf(fill = NA) +
   coord_sf(xlim = ca_bbox[1:2],
            ylim = ca_bbox[3:4]) +
-  geom_point(data = ghcnd_stations_tmin_97p_hhy_params_df,
+  geom_point(data = ghcnd_stations_tmin_97p_params_df,
              aes(x = longitude, y = latitude, color = q_hat)) +
   scale_color_viridis_b() +
   labs(title = "Probability that a Heatwave\nLasts Only One Day",
@@ -86,7 +86,7 @@ ggplot(data = world) +
   geom_sf(fill = NA) +
   coord_sf(xlim = ca_bbox[1:2],
            ylim = ca_bbox[3:4]) +
-  geom_point(data = ghcnd_stations_tmin_97p_hhy_params_df,
+  geom_point(data = ghcnd_stations_tmin_97p_params_df,
              aes(x = longitude, y = latitude, color = 1-q_hat)) +
   scale_color_viridis_b() +
   labs(title = "Probability that a Heatwave\nLasts Beyond One Day",
@@ -102,7 +102,7 @@ ggplot(data = world) +
   geom_sf(fill = NA) +
   coord_sf(xlim = ca_bbox[1:2],
            ylim = ca_bbox[3:4]) +
-  geom_point(data = ghcnd_stations_tmin_97p_hhy_params_df,
+  geom_point(data = ghcnd_stations_tmin_97p_params_df,
              aes(x = longitude, y = latitude, color = p_hat)) +
   scale_color_viridis_b() +
   labs(title = "Probability that a Heatwave\nEnds on Any Day After the First",
@@ -118,7 +118,7 @@ ggplot(data = world) +
   geom_sf(fill = NA) +
   coord_sf(xlim = ca_bbox[1:2],
            ylim = ca_bbox[3:4]) +
-  geom_point(data = ghcnd_stations_tmin_97p_hhy_params_df,
+  geom_point(data = ghcnd_stations_tmin_97p_params_df,
              aes(x = longitude, y = latitude, color = 1/p_hat)) +
   scale_color_viridis_b(limits = c(0,8), breaks = seq(2,6,by =2)) +
   labs(title = "\'Persistance\' of Heatwaves\nAfter First Day",
@@ -133,7 +133,7 @@ ggplot(data = world) +
   geom_sf(fill = NA) +
   coord_sf(xlim = ca_bbox[1:2],
            ylim = ca_bbox[3:4]) +
-  geom_point(data = ghcnd_stations_tmin_97p_hhy_params_df,
+  geom_point(data = ghcnd_stations_tmin_97p_params_df,
              aes(x = longitude, y = latitude, color = b_hat)) +
   scale_color_viridis_b() +
   labs(title = "Reciprocal of\nMean Temperature Exceedance",
@@ -147,7 +147,7 @@ ggplot(data = world) +
   geom_sf(fill = NA) +
   coord_sf(xlim = ca_bbox[1:2],
            ylim = ca_bbox[3:4]) +
-  geom_point(data = ghcnd_stations_tmin_97p_hhy_params_df,
+  geom_point(data = ghcnd_stations_tmin_97p_params_df,
              aes(x = longitude, y = latitude, color = 1/b_hat)) +
   scale_color_viridis_b() +
   labs(title = "Mean Temperature Exceedance\nOn Heatwave Days",

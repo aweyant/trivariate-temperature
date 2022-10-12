@@ -742,6 +742,7 @@ create_events<- function(df,
           filter(active == 1) %>%
           group_by(interaction(unique_id, event_number)) %>%
           mutate(event_length = sum(active, na.rm = TRUE),
+                 exceedance = .data[[event_var]] - event_var_threshold,
                  across(all_of(metadata_coords), min)) 
         return(df[,-1]) # return data.frame without ugly grouping variable
         #return(df)
@@ -767,6 +768,7 @@ create_events<- function(df,
           filter(active == 1) %>%
           group_by(interaction(unique_id, event_number)) %>%
           mutate(event_length = sum(active, na.rm = TRUE),
+                 exceedance = .data[[event_var]] - event_var_threshold,
                  across(all_of(metadata_coords), min)) 
         return(df[,-1]) # return data.frame without ugly grouping variable
       }

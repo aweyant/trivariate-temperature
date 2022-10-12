@@ -31,17 +31,21 @@ rhgeom <- function(n, q, p) {
 rgtetlg <- function(n,q,p,b,rounding = FALSE) {
   event_length = rhgeom(n,q,p)
   increment_totals = matrix(nrow = n, ncol = max(event_length))
-  for(i in 1:n) {
-    increment_totals[i,1:event_length[i]] = rexp(event_length[i], b)
+  
+  if(rounding == TRUE) {
+    for(i in 1:n) {
+      increment_totals[i,1:event_length[i]] = round(rexp(event_length[i], b))
+    }
+  } 
+  else {
+    for(i in 1:n) {
+      increment_totals[i,1:event_length[i]] = rexp(event_length[i], b)
+    }
   }
+  
   event_magnitude = apply(increment_totals, MARGIN = 1, FUN = sum, na.rm = TRUE)
   event_max = apply(increment_totals, MARGIN = 1, FUN = max, na.rm = TRUE)
-  if(rounding == TRUE) {
-    return(data.frame(event_length, event_magnitude = ceiling(event_magnitude), event_max = ceiling(event_max)))
-  }
-  else{
-    return(data.frame(event_length, event_magnitude, event_max))
-  }
+  return(data.frame(event_length, event_magnitude, event_max))
 }
 
 ###########################################
